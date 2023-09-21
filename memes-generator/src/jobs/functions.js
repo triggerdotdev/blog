@@ -66,6 +66,9 @@ client.defineJob({
   trigger: eventTrigger({
     name: "gpt.text",
   }),
+  integrations: {
+    openai,
+  },
   run: async (payload, io, ctx) => {
     const { userPrompt, sysPrompt, selectedTemplate, email } = payload;
     await io.logger.info("✨ Talking to ChatGPT 🫂");
@@ -94,7 +97,7 @@ client.defineJob({
         },
       },
     ];
-    const response = await openai.chat.completions.create("create-meme", {
+    const response = await io.openai.chat.completions.create("create-meme", {
       model: "gpt-3.5-turbo",
       messages,
       functions,
@@ -181,12 +184,15 @@ client.defineJob({
   trigger: eventTrigger({
     name: "send.meme",
   }),
+  integrations: {
+    resend,
+  },
   run: async (payload, io, ctx) => {
     const { meme_url, email } = payload;
 
     await io.logger.info("Sending meme to the user 🎉");
 
-    await resend.sendEmail("📧", {
+    await io.resend.sendEmail("📧", {
       from: "onboarding@resend.dev",
       to: [email],
       subject: "Your meme is ready!",
