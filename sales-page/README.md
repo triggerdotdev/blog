@@ -22,4 +22,9 @@ This is a demo for creating a sales page using.
 - Stripe for payments
 - Airtable for the database (to save the customer)
 
-Please make sure you update the .env file.
+# Installation
+
+- Change the file .env.example to .env and fill up the variables
+- Run `npm install`
+- Run `npm run dev`
+- Visit the website on http://localhost:3000
