@@ -1,0 +1,37 @@
+{
+  "name": "x-scheduler",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.17",
+    "@supabase/supabase-js": "^2.38.0",
+    "@trigger.dev/nextjs": "^2.1.9",
+    "@trigger.dev/react": "^2.1.9",
+    "@trigger.dev/sdk": "^2.1.9",
+    "@trigger.dev/supabase": "^2.1.9",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-icons": "^4.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "autoprefixer": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "postcss": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest"
+  },
+  "trigger.dev": {
+    "endpointId": "post-scheduler-5ne7"
+  }
+}

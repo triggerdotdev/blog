@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "Nunito Sans", sans-serif;
+}
+
+td,
+th {
+	border: 1px solid #dfd7bf;
+	text-align: left;
+	padding: 14px;
+}
+
+tr:nth-child(even) {
+	background-color: #f5f5f5;
+}
