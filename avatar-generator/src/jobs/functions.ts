@@ -27,7 +27,7 @@ const urlToBase64 = async (image: string) => {
 client.defineJob({
   id: "generate-avatar",
   name: "Generate Avatar",
-  integrations: { resend },
+  integrations: { resend, replicate },
   version: "0.0.1",
   trigger: eventTrigger({
     name: "generate.avatar",
@@ -43,7 +43,7 @@ client.defineJob({
 
     await io.logger.info("Avatar generation started!", { image });
 
-    const imageGenerated = await replicate.run("create-model", {
+    const imageGenerated = await io.replicate.run("create-model", {
       identifier:
         "stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316",
       input: {
@@ -55,7 +55,7 @@ client.defineJob({
       },
     });
 
-    const swappedImage = await replicate.run("create-image", {
+    const swappedImage = await io.replicate.run("create-image", {
       identifier:
         "lucataco/faceswap:9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
       input: {
