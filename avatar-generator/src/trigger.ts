@@ -4,4 +4,6 @@ export const client = new TriggerClient({
   id: "avatar-generator-jlkj",
   apiKey: process.env.TRIGGER_API_KEY,
   apiUrl: process.env.TRIGGER_API_URL,
+  logLevel: "debug",
+  verbose: true,
 });
