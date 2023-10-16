@@ -1,11 +1,12 @@
 import { eventTrigger } from "@trigger.dev/sdk";
-import Replicate from "replicate";
 import { client } from "@/trigger";
 import { Resend } from "@trigger.dev/resend";
+import { Replicate } from "@trigger.dev/replicate";
 import { z } from "zod";
 
 const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN!,
+  id: "replicate",
+  apiKey: process.env.REPLICATE_API_TOKEN!,
 });
 
 const resend = new Resend({
@@ -42,36 +43,34 @@ client.defineJob({
 
     await io.logger.info("Avatar generation started!", { image });
 
-    const imageGenerated = await replicate.run(
-      "stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316",
-      {
-        input: {
-          prompt: `${
-            userPrompt
-              ? userPrompt
-              : `A professional ${gender} portrait suitable for a social media avatar. Please ensure the image is appropriate for all audiences.`
-          }`,
-        },
-      }
-    );
+    const imageGenerated = await replicate.run("create-model", {
+      identifier:
+        "stability-ai/sdxl:c221b2b8ef527988fb59bf24a8b97c4561f1c671f73bd389f866bfb27c061316",
+      input: {
+        prompt: `${
+          userPrompt
+            ? userPrompt
+            : `A professional ${gender} portrait suitable for a social media avatar. Please ensure the image is appropriate for all audiences.`
+        }`,
+      },
+    });
 
-    const swappedImage = await replicate.run(
-      "lucataco/faceswap:9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
-      {
-        input: {
-          // @ts-ignore
-          target_image: await urlToBase64(imageGenerated[0]),
-          swap_image: "data:image/png;base64," + image,
-        },
-      }
-    );
+    const swappedImage = await replicate.run("create-image", {
+      identifier:
+        "lucataco/faceswap:9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
+      input: {
+        // @ts-ignore
+        target_image: await urlToBase64(imageGenerated[0]),
+        swap_image: "data:image/png;base64," + image,
+      },
+    });
 
     await io.logger.info(JSON.stringify(swappedImage));
     await io.resend.sendEmail("send-email", {
       from: "onboarding@resend.dev",
       to: [email],
       subject: "Your avatar is ready! 🌟🤩",
-      text: `Hi! \n View and download your avatar here - ${swappedImage}`,
+      text: `Hi! \n View and download your avatar here - ${swappedImage.output}`,
     });
 
     await io.logger.info(
