@@ -1,0 +1,38 @@
+{
+  "name": "avatar-generator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@trigger.dev/nextjs": "^2.2.0",
+    "@trigger.dev/react": "^2.2.0",
+    "@trigger.dev/resend": "^2.2.0",
+    "@trigger.dev/sdk": "^2.2.0",
+    "@types/formidable": "^3.4.3",
+    "formidable": "^3.5.1",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "replicate": "^0.20.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "autoprefixer": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "postcss": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest"
+  },
+  "trigger.dev": {
+    "endpointId": "avatar-generator-jlkj"
+  }
+}
