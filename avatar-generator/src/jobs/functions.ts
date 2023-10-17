@@ -41,7 +41,9 @@ client.defineJob({
   run: async (payload, io, ctx) => {
     const { email, image, gender, userPrompt } = payload;
 
-    await io.logger.info("Avatar generation started!", { image });
+    // const status = await io.createStatus("Generating avatar...", {
+    //   label: "Generating avatar...",
+    // });
 
     const imageGenerated = await io.replicate.run("create-model", {
       identifier:
@@ -75,5 +77,9 @@ client.defineJob({
     await io.logger.info(
       "✨ Congratulations, the image has been delivered! ✨"
     );
+
+    return {
+      image: swappedImage.output,
+    };
   },
 });
