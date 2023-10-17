@@ -66,7 +66,7 @@ client.defineJob({
 
     await io.logger.info(JSON.stringify(swappedImage));
     await io.resend.sendEmail("send-email", {
-      from: "onboarding@resend.dev",
+      from: "hi@demo.tgr.dev",
       to: [email],
       subject: "Your avatar is ready! 🌟🤩",
       text: `Hi! \n View and download your avatar here - ${swappedImage.output}`,
