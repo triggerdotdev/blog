@@ -59,8 +59,7 @@ client.defineJob({
       identifier:
         "lucataco/faceswap:9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
       input: {
-        // @ts-ignore
-        target_image: await urlToBase64(imageGenerated[0]),
+        target_image: await urlToBase64(imageGenerated.output),
         swap_image: "data:image/png;base64," + image,
       },
     });
