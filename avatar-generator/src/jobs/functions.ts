@@ -28,7 +28,7 @@ client.defineJob({
   id: "generate-avatar",
   name: "Generate Avatar",
   integrations: { resend, replicate },
-  version: "0.0.1",
+  version: "0.0.2",
   trigger: eventTrigger({
     name: "generate.avatar",
     schema: z.object({
