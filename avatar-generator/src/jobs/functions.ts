@@ -41,9 +41,20 @@ client.defineJob({
   run: async (payload, io, ctx) => {
     const { email, image, gender, userPrompt } = payload;
 
-    // const status = await io.createStatus("Generating avatar...", {
-    //   label: "Generating avatar...",
-    // });
+    //a status allows you to easily show the Job's progress in your UI
+    const generatingCharacterStatus = await io.createStatus(
+      "generating-character",
+      {
+        label: "Generating placeholder to swap your face into",
+        state: "loading",
+      }
+    );
+    const swappingFaceStatus = await io.createStatus("swapping-face", {
+      label: "Swapping face",
+    });
+    const sendingEmailStatus = await io.createStatus("sending-email", {
+      label: "Sending email",
+    });
 
     const imageGenerated = await io.replicate.run("create-model", {
       identifier:
@@ -57,6 +68,32 @@ client.defineJob({
       },
     });
 
+    if (imageGenerated.output === undefined || imageGenerated.error !== null) {
+      await generatingCharacterStatus.update("generating-character-error", {
+        label: "Placeholder generation failed",
+        state: "failure",
+      });
+
+      if (imageGenerated.error !== null) {
+        throw new Error(JSON.stringify(imageGenerated.error));
+      }
+
+      throw new Error("Character generation failed");
+    }
+
+    await generatingCharacterStatus.update("generating-character-success", {
+      label: "Placeholder character generated",
+      state: "success",
+      data: {
+        url: Array.isArray(imageGenerated.output)
+          ? imageGenerated.output[0]
+          : undefined,
+      },
+    });
+
+    await swappingFaceStatus.update("swapping-face-loading", {
+      state: "loading",
+    });
     const swappedImage = await io.replicate.run("create-image", {
       identifier:
         "lucataco/faceswap:9a4298548422074c3f57258c5d544497314ae4112df80d116f0d2109e843d20d",
@@ -66,12 +103,39 @@ client.defineJob({
       },
     });
 
-    await io.logger.info(JSON.stringify(swappedImage));
+    if (swappedImage.output === undefined || swappedImage.error !== null) {
+      await generatingCharacterStatus.update("faceswap-error", {
+        label: "Face swap failed",
+        state: "failure",
+      });
+
+      if (swappedImage.error !== null) {
+        throw new Error(JSON.stringify(swappedImage.error));
+      }
+
+      throw new Error("Character generation failed");
+    }
+
+    await swappingFaceStatus.update("swapping-face-success", {
+      label: "Face swapped",
+      state: "success",
+      data: {
+        url: swappedImage.output,
+      },
+    });
+
+    await sendingEmailStatus.update("sending-email-loading", {
+      state: "loading",
+    });
     await io.resend.sendEmail("send-email", {
       from: "hi@demo.tgr.dev",
       to: [email],
       subject: "Your avatar is ready! 🌟🤩",
       text: `Hi! \n View and download your avatar here - ${swappedImage.output}`,
+    });
+    await sendingEmailStatus.update("sending-email-success", {
+      label: "Email sent",
+      state: "success",
     });
 
     await io.logger.info(

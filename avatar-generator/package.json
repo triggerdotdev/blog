@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
     "@trigger.dev/nextjs": "^2.2.0",
     "@trigger.dev/react": "^2.2.0",
-    "@trigger.dev/resend": "^2.2.0",
     "@trigger.dev/replicate": "^2.2.0",
+    "@trigger.dev/resend": "^2.2.0",
     "@trigger.dev/sdk": "^2.2.0",
     "@types/formidable": "^3.4.3",
     "formidable": "^3.5.1",
