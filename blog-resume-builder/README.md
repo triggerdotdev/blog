@@ -14,7 +14,7 @@
 
 </div>
 
-# Sales Page
+# Resume Builder
 
 This is a demo for creating a resume with AI
 
