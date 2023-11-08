@@ -19,7 +19,6 @@
 This is a demo for creating a resume with AI
 
 - NextJS with TailwindCSS for the UI and API
-- Supabase as a database
 - TriggerDev for running the background jobs
 - Resend for sending emails
 - OpenAI ChatGPT for the AI

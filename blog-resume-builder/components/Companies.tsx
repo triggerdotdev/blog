@@ -1,13 +1,32 @@
-import React from "react";
+import React, {useCallback, useEffect} from "react";
 
 import { TCompany } from "./Home";
+import {useFieldArray, useFormContext} from "react-hook-form";
 
 type CompaniesProps = {
   companies: TCompany[];
-  onRemoveCompany: (index: number) => void;
 };
 
-const Companies = ({ companies, onRemoveCompany }: CompaniesProps) => {
+const Companies = () => {
+  const {control, register} = useFormContext();
+  const {fields: companies, append} = useFieldArray({
+    control,
+    name: "companies",
+  });
+
+  const addCompany = useCallback(() => {
+    append({
+      companyName: '',
+      position: '',
+      workedYears: '',
+      technologies: ''
+    })
+  }, [companies]);
+
+  useEffect(() => {
+    addCompany();
+  }, []);
+
   return (
     <div className="mb-4">
       {companies.length > 1 ? (
@@ -27,10 +46,9 @@ const Companies = ({ companies, onRemoveCompany }: CompaniesProps) => {
               </label>
               <input
                 type="text"
-                name="company"
                 id={`companyName-${index}`}
-                defaultValue={company.companyName}
                 className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
+                {...register(`companies.${index}.companyName`, {required: true})}
               />
             </div>
 
@@ -41,9 +59,8 @@ const Companies = ({ companies, onRemoveCompany }: CompaniesProps) => {
               <input
                 type="text"
                 id={`position-${index}`}
-                name="position"
-                defaultValue={company.position}
                 className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
+                {...register(`companies.${index}.position`, {required: true})}
               />
             </div>
 
@@ -52,22 +69,28 @@ const Companies = ({ companies, onRemoveCompany }: CompaniesProps) => {
                 Worked Years
               </label>
               <input
-                type="text"
-                name="workedYears"
-                id={`workedYears-${index}`}
-                defaultValue={company.workedYears}
-                className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
+                  type="number"
+                  id={`workedYears-${index}`}
+                  className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
+                  {...register(`companies.${index}.workedYears`, {required: true})}
               />
             </div>
-
-            <button
-              onClick={() => onRemoveCompany(index)}
-              className="bg-red-500 text-white rounded p-2 hover:bg-red-600"
-            >
-              Remove
-            </button>
+            <div className="mb-2">
+              <label htmlFor={`workedYears-${index}`} className="text-white">
+                Technologies
+              </label>
+              <input
+                  type="text"
+                  id={`technologies-${index}`}
+                  className="p-2 border border-gray-300 rounded-md w-full bg-transparent"
+                  {...register(`companies.${index}.technologies`, {required: true})}
+              />
+            </div>
           </div>
         ))}
+        <button type="button" onClick={addCompany} className="mb-4 p-2 pointer outline-none bg-blue-900 w-full border-none text-white text-base font-semibold rounded-lg">
+          Add Company
+        </button>
     </div>
   );
 };
