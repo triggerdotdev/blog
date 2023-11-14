@@ -27,21 +27,28 @@ export async function POST(request: Request) {
     const starsMonth = await getAllGithubStars(owner, name);
     const repo: Repository[] = [];
     for (const stars of starsMonth) {
-        try {
-            repo.push(
-                await prisma.repository.create({
-                    data: {
+        repo.push(
+            await prisma.repository.upsert({
+                where: {
+                    name_day_month_year: {
                         name: `${owner}/${name}`,
                         month: stars.date.month,
                         year: stars.date.year,
                         day: stars.date.day,
-                        stars: stars.stars,
-                    }
-                })
-            );
-        }
-        catch (err) {
-        }
+                    },
+                },
+                update: {
+                    stars: stars.stars,
+                },
+                create: {
+                    name: `${owner}/${name}`,
+                    month: stars.date.month,
+                    year: stars.date.year,
+                    day: stars.date.day,
+                    stars: stars.stars,
+                }
+            })
+        );
     }
     return new Response(JSON.stringify(await getList(repo)), {status: 200});
 }

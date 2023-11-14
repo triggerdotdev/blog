@@ -1,4 +1,4 @@
-import { cronTrigger, invokeTrigger, isTriggerError } from "@trigger.dev/sdk";
+import { cronTrigger, invokeTrigger } from "@trigger.dev/sdk";
 import { client } from "@/trigger";
 import { prisma } from "../../helper/prisma";
 import axios from "axios";
