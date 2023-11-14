@@ -58,30 +58,26 @@ const getStars = client.defineJob({
       );
       return data.stargazers_count as number;
     });
-    try {
-      await prisma.repository.upsert({
-        where: {
-          name_day_month_year: {
-            name: payload.name,
-            month: new Date().getMonth() + 1,
-            year: new Date().getFullYear(),
-            day: new Date().getDate(),
-          },
-        },
-        update: {
-            stars: stargazers_count - payload.previousStarCount,
-        },
-        create: {
+
+    await prisma.repository.upsert({
+      where: {
+        name_day_month_year: {
           name: payload.name,
-          stars: stargazers_count - payload.previousStarCount,
           month: new Date().getMonth() + 1,
           year: new Date().getFullYear(),
           day: new Date().getDate(),
         },
-      });
-    } catch (err) {
-      if (isTriggerError(err)) throw err;
-      console.log("Record already exists");
-    }
+      },
+      update: {
+          stars: stargazers_count - payload.previousStarCount,
+      },
+      create: {
+        name: payload.name,
+        stars: stargazers_count - payload.previousStarCount,
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+        day: new Date().getDate(),
+      },
+    });
   },
 });
