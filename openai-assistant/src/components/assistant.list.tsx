@@ -2,18 +2,18 @@
 
 import {FC, useEffect} from "react";
 import {ExtendedAssistant} from "@openai-assistant/components/main";
-import {useEventDetails} from "@trigger.dev/react";
+import {useEventRunDetails} from "@trigger.dev/react";
 
 export const Loading: FC<{eventId: string, onFinish: () => void}> = (props) => {
     const {eventId} = props;
-    const { data, error } = useEventDetails(eventId);
+    const { data, error } = useEventRunDetails(eventId);
 
     useEffect(() => {
         if (!data || error) {
             return ;
         }
 
-        if (data.runs.every(v => v.status === 'SUCCESS')) {
+        if (data.status === 'SUCCESS') {
             props.onFinish();
         }
     }, [data]);
