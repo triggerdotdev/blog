@@ -3,7 +3,6 @@ import { client } from "@openai-assistant/trigger";
 import {object, string} from "zod";
 import {JSDOM} from "jsdom";
 import {getElementsBetween} from "@openai-assistant/helper/elements.between";
-import striptags from "striptags";
 import {chunk} from "lodash";
 import {prisma} from "@openai-assistant/helper/prisma.client";
 import {makeId} from "@openai-assistant/helper/make.id";
@@ -158,7 +157,7 @@ const processContent = client.defineJob({
                 const nextElement = content?.[i + 1] || lastElement;
                 const elementsBetween = getElementsBetween(element, nextElement);
                 elements.push({
-                    title: element.textContent, content: elementsBetween.map((el) => striptags(el.innerHTML!)).join('\n')
+                    title: element.textContent, content: elementsBetween.map((el) => el.textContent).join('\n')
                 });
             }
 
