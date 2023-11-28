@@ -1,0 +1,46 @@
+{
+  "name": "openai-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.6.0",
+    "@trigger.dev/nextjs": "^2.2.7",
+    "@trigger.dev/openai": "^2.2.7",
+    "@trigger.dev/react": "^2.2.7",
+    "@trigger.dev/sdk": "^2.2.7",
+    "@types/jsdom": "^21.1.6",
+    "@types/lodash": "^4.14.202",
+    "extract-urls": "^1.4.0",
+    "fast-xml-parser": "^4.3.2",
+    "jsdom": "^22.1.0",
+    "lodash": "^4.17.21",
+    "next": "14.0.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.48.2",
+    "react-markdown": "^9.0.1",
+    "stream": "^0.0.2",
+    "string-to-stream": "^3.0.1",
+    "striptags": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  },
+  "trigger.dev": {
+    "endpointId": "openai-assistant-_q3c"
+  }
+}
