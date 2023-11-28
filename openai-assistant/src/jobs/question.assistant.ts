@@ -17,29 +17,28 @@ client.defineJob({
     }), integrations: {
         openai
     }, run: async (payload, io, ctx) => {
-        console.log(payload);
-        console.log('creating a new thread');
+        // Create or use an existing thread
         const thread = payload.threadId ? await io.openai.beta.threads.retrieve('get-thread', payload.threadId) : await io.openai.beta.threads.create('create-thread');
 
-        console.log('creating a new message');
+       // Create a message in the thread
        await io.openai.beta.threads.messages.create('create-message', thread.id, {
             content: payload.content,
             role: 'user',
         });
 
-       console.log('running thread');
+       // Run the thread
         const run = await io.openai.beta.threads.runs.createAndWaitForCompletion('run-thread', thread.id, {
             model: 'gpt-4-1106-preview',
             assistant_id: payload.aId,
         });
 
-        console.log('checking status');
+        // Check the status of the thread
         if (run.status !== "completed") {
             console.log('not completed');
             throw new Error(`Run finished with status ${run.status}: ${JSON.stringify(run.last_error)}`);
         }
 
-        console.log('getting messages list');
+        // Get the messages from the thread
         const messages = await io.openai.beta.threads.messages.list("list-messages", run.thread_id, {
             query: {
                 limit: "1"
