@@ -1,11 +1,5 @@
-import OpenAI from 'openai';
-
 import {prisma} from "@openai-assistant/helper/prisma.client";
 import {client} from "@openai-assistant/trigger";
-
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY!,
-});
 
 export async function POST(request: Request) {
     const body = await request.json();
