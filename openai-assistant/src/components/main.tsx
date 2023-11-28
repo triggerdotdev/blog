@@ -48,21 +48,21 @@ export default function Main({list}: {list: ExtendedAssistant[]}) {
     }, [assistantState])
 
     return (
-        <div className="w-full max-w-2xl mx-auto p-6 flex flex-col gap-4">
-            <form className="flex items-center space-x-4" onSubmit={handleSubmit(submit)}>
-                <input className="flex-grow p-3 border border-black/20 rounded-xl" placeholder="Add documentation link" type="text" {...register('url', {required: 'true'})} />
-                <button className="flex-shrink p-3 border border-black/20 rounded-xl" type="submit">
-                    Add
-                </button>
-            </form>
-            <div className="divide-y-2 divide-gray-300 flex gap-2 flex-wrap">
-                <TriggerProvider publicApiKey={process.env.NEXT_PUBLIC_TRIGGER_PUBLIC_API_KEY!}>
+        <TriggerProvider publicApiKey={process.env.NEXT_PUBLIC_TRIGGER_PUBLIC_API_KEY!}>
+            <div className="w-full max-w-2xl mx-auto p-6 flex flex-col gap-4">
+                <form className="flex items-center space-x-4" onSubmit={handleSubmit(submit)}>
+                    <input className="flex-grow p-3 border border-black/20 rounded-xl" placeholder="Add documentation link" type="text" {...register('url', {required: 'true'})} />
+                    <button className="flex-shrink p-3 border border-black/20 rounded-xl" type="submit">
+                        Add
+                    </button>
+                </form>
+                <div className="divide-y-2 divide-gray-300 flex gap-2 flex-wrap">
                     {assistantState.map(val => (
                         <AssistantList key={val.url} deleteFromList={deleteFromList(val)} val={val} onFinish={changeStatus(val)} />
                     ))}
-                </TriggerProvider>
+                </div>
+                {assistantState.filter(f => !f.pending).length > 0 && <ChatgptComponent list={assistantState} />}
             </div>
-            {assistantState.filter(f => !f.pending).length > 0 && <ChatgptComponent list={assistantState} />}
-        </div>
+        </TriggerProvider>
     )
 }

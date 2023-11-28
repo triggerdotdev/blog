@@ -7,12 +7,7 @@ import striptags from "striptags";
 import {chunk} from "lodash";
 import {prisma} from "@openai-assistant/helper/prisma.client";
 import {makeId} from "@openai-assistant/helper/make.id";
-import { OpenAI } from "@trigger.dev/openai";
-
-const openai = new OpenAI({
-    id: "openai",
-    apiKey: process.env.OPENAI_API_KEY!,
-});
+import {openai} from "@openai-assistant/helper/open.ai";
 
 client.defineJob({
   // This is the unique identifier for your Job, it must be unique across all Jobs in your project.

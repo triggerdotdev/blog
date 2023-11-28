@@ -9,12 +9,11 @@ export async function POST(request: Request) {
 
     // We send an event to the trigger to process the documentation
     const {id: eventId} = await client.sendEvent({
-        name: "process.documentation.event", payload: {url: body.url},
+        name: "process.documentation.event",
+        payload: {url: body.url},
     });
 
-    return new Response(JSON.stringify({
-        eventId
-    }), {status: 200});
+    return new Response(JSON.stringify({eventId}), {status: 200});
 }
 
 export async function GET(request: Request) {

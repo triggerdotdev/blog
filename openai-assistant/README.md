@@ -25,7 +25,7 @@ This is a demo for creating a custom OpenAI Assistant using TriggerDev.
 
 # Installation
 
-- Change the file .env.local.example to .env and fill up the variables
+- Change the file .env.local to .env and fill up the variables
 - Run `npm install`
 - Run `npm run dev`
 - Visit the website on http://localhost:3000
