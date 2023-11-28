@@ -74,17 +74,13 @@ client.defineJob({
       file: data
     });
 
-    // We check if we already have an old assistant, based on the URL (from the database)
-    const currentAssistant = await io.runTask('find-old-assistant', async () => {
-      return prisma.assistant.findFirst({
-          where: {
-              url: payload.url
-          }
-      });
-    });
-
     // We create a new assistant or update the old one with the new file
     const assistant = await io.openai.runTask("create-or-update-assistant", async (openai) => {
+        const currentAssistant = await prisma.assistant.findFirst({
+            where: {
+                url: payload.url
+            }
+        });
         if (currentAssistant) {
             return openai.beta.assistants.update(currentAssistant.aId, {
                 file_ids: [file.id]

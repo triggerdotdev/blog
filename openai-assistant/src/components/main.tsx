@@ -27,16 +27,6 @@ export default function Main({list}: {list: ExtendedAssistant[]}) {
         setAssistantState([...assistantState, {...assistantResponse, url:  data.url, pending: true}]);
     }, [assistantState])
 
-    const deleteFromList = useCallback((val: ExtendedAssistant) => () => {
-        fetch(`/api/assistant/${val.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        setAssistantState(assistantState.filter(v => v.id !== val.id));
-    }, [assistantState])
-
     const changeStatus = useCallback((val: ExtendedAssistant) => async () => {
         const assistantResponse = await (await fetch(`/api/assistant?url=${val.url}`, {
             method: 'GET',
@@ -58,7 +48,7 @@ export default function Main({list}: {list: ExtendedAssistant[]}) {
                 </form>
                 <div className="divide-y-2 divide-gray-300 flex gap-2 flex-wrap">
                     {assistantState.map(val => (
-                        <AssistantList key={val.url} deleteFromList={deleteFromList(val)} val={val} onFinish={changeStatus(val)} />
+                        <AssistantList key={val.url} val={val} onFinish={changeStatus(val)} />
                     ))}
                 </div>
                 {assistantState.filter(f => !f.pending).length > 0 && <ChatgptComponent list={assistantState} />}
